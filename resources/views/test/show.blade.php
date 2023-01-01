@@ -11,23 +11,42 @@
 <div class="container">
     <h4>Daftar Nama Pengguna</h4>
     <div class="row">
-        <table>
-            <tr>
-                <td>Nama</td>
-                <td>:</td>
-                <td>{{ $user['nama'] }}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>:</td>
-                <td>{{ $user['email'] }}</td>
-            </tr>
-            <tr>
-                <td>Phone</td>
-                <td>:</td>
-                <td>{{ $user['phone'] }}</td>
-            </tr>
-        </table>
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <form action="{{ route('user.update', ['id' => $user->id()]) }}" method="post">
+                    @csrf
+                    <tr>
+                        <td>Nama</td>
+                        <td>:</td>
+                        <td>
+                            <input type="text" class="form-control" name="nama" value="{{ $user['nama'] }}">
+                            @error('nama')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>:</td>
+                        <td>
+                            <input type="text" class="form-control" name="email" value="{{ $user['email'] }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>:</td>
+                        <td>
+                            <input type="text" class="form-control" name="phone" value="{{ $user['phone'] }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><button type="submit" class="btn btn-success">Update</button></td>
+                    </tr>
+
+                </form>
+
+            </table>
+        </div>
 
     </div>
 

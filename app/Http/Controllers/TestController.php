@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\CreateUser;
+use App\Http\Requests\User\UpdateUser;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Firestore;
 
@@ -34,7 +36,7 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CreateUser $request)
     {
         $users = $this->database->collection('users');
         $id     = 'anisa@gmail.com';
@@ -49,6 +51,7 @@ class TestController extends Controller
             ]
         ];
         $this->database->collection('users')->document($id)->set($data);
+        dd($request->email);
 
     }
 
@@ -105,9 +108,11 @@ class TestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, $id)
     {
-        //
+        $input = $request->validated();
+        dd($input);
+
     }
 
     /**

@@ -16,5 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('test', [\App\Http\Controllers\TestController::class, 'index']);
+Route::get('tests', [\App\Http\Controllers\TestController::class, 'index']);
+Route::get('test', [\App\Http\Controllers\TestController::class, 'create']);
 Route::get('test/{id}', [\App\Http\Controllers\TestController::class, 'show']);
+Route::post('test/{id}/update', [\App\Http\Controllers\TestController::class, 'update'])->name('user.update');
