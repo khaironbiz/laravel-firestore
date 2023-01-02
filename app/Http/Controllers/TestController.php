@@ -12,6 +12,7 @@ class TestController extends Controller
     public function __construct(Firestore $firestore)
     {
         $this->database = $firestore->database();
+
     }
     /**
      * Display a listing of the resource.
@@ -39,7 +40,7 @@ class TestController extends Controller
     public function create(CreateUser $request)
     {
         $users = $this->database->collection('users');
-        $id     = 'anisa@gmail.com';
+        $id     = time().rand(1000,9999);
         $data = [
             'id'        => $id,
             'nama'      => 'Anisa Fitri Laila',
@@ -50,7 +51,10 @@ class TestController extends Controller
                 'nama_sekolah'  => 'SD Kreativa'
             ]
         ];
-        $this->database->collection('users')->document($id)->set($data);
+        $create = $this->database->collection('users')->document($id)->set($data);
+        if($create){
+            dd('suksess');
+        }
         dd($request->email);
 
     }
