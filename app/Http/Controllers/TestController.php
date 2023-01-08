@@ -60,7 +60,9 @@ class TestController extends Controller
             'nama'      => $request->nama,
             'email'     => $request->email,
             'phone'     => ($request->phone)*1,
-            'dob'       => strtotime($request->dob)
+            'nik'       => ($request->nik)*1,
+            'dob'       => strtotime($request->dob),
+            'created_at'=> time()
         ];
 //        var_dump($data_input);
         $user   = app('firebase.firestore')->database()->collection('users')->newDocument();
@@ -115,7 +117,18 @@ class TestController extends Controller
      */
     public function update(UpdateUser $request, $id)
     {
-        $data_update = $request->all();
+        $data_user  = $this->database->document('users/'.$id)->snapshot();
+//        dd($data_user);
+        $input = $request->all();
+        $data_update = [
+            'nama'      => $request->nama,
+            'email'     => $request->email,
+            'phone'     => ($request->phone)*1,
+            'nik'       => ($request->nik)*1,
+            'dob'       => strtotime($request->dob),
+            'created_at'=> ($data_user['created_at'])*1,
+            'updated_at'=> time()
+        ];
         $user = app('firebase.firestore')
             ->database()
             ->collection('users')

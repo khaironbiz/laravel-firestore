@@ -30,6 +30,16 @@
     </td>
 </tr>
 <tr>
+    <td>NIK</td>
+    <td>:</td>
+    <td>
+        <input type="text" class="form-control" name="nik" value="{{ (old('nik', $user['nik']))  }}">
+        @error('nik')
+        <small class="text-danger">{{$message}}</small>
+        @enderror
+    </td>
+</tr>
+<tr>
     <td>Tgl Lahir</td>
     <td>:</td>
     <td>

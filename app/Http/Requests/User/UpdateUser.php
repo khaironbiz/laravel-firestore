@@ -25,8 +25,10 @@ class UpdateUser extends FormRequest
     {
         return [
             'nama'      => 'required',
-            'email'     => 'required',
+            'dob'       => 'required|date',
+            'email'     => 'required|email',
             'phone'     => 'required',
+            'nik'       => 'required'
         ];
     }
 }

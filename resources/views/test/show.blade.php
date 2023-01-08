@@ -35,7 +35,7 @@
                                 @csrf
                                 <div class="modal-header bg-danger">Delete Data</div>
                                 <div class="modal-body">
-                                    <input type="checkbox"> Saya menyetujui penghapusan data ini
+                                    <input type="checkbox" required> Saya menyetujui penghapusan data ini
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

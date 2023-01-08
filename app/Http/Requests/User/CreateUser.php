@@ -28,6 +28,7 @@ class CreateUser extends FormRequest
             'dob'       => 'required|date',
             'email'     => 'required|email',
             'phone'     => 'required',
+            'nik'       => 'required'
         ];
     }
 }
