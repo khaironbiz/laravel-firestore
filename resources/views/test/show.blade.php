@@ -15,35 +15,36 @@
             <table class="table table-striped">
                 <form action="{{ route('user.update', ['id' => $user->id()]) }}" method="post">
                     @csrf
+                    @include('test._form')
                     <tr>
-                        <td>Nama</td>
-                        <td>:</td>
-                        <td>
-                            <input type="text" class="form-control" name="nama" value="{{ $user['nama'] }}">
-                            @error('nama')
-                            <small class="text-danger">{{$message}}</small>
-                            @enderror
+                        <td colspan="3">
+                            <a href="{{ route('user.index') }}" class="btn btn-warning">Back</a>
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Delete
+                            </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td>:</td>
-                        <td>
-                            <input type="text" class="form-control" name="email" value="{{ $user['email'] }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Phone</td>
-                        <td>:</td>
-                        <td>
-                            <input type="text" class="form-control" name="phone" value="{{ $user['phone'] }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><button type="submit" class="btn btn-success">Update</button></td>
-                    </tr>
-
                 </form>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ route('user.destroy', ['id' => $user->id()]) }}" method="post">
+                                @csrf
+                                <div class="modal-header bg-danger">Delete Data</div>
+                                <div class="modal-body">
+                                    <input type="checkbox"> Saya menyetujui penghapusan data ini
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
             </table>
         </div>

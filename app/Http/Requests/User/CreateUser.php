@@ -24,7 +24,10 @@ class CreateUser extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama'      => 'required',
+            'dob'       => 'required|date',
+            'email'     => 'required|email',
+            'phone'     => 'required',
         ];
     }
 }

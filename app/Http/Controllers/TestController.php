@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateUser;
 use App\Http\Requests\User\UpdateUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Firestore;
+use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Firestore\Transaction;
 
 class TestController extends Controller
 {
@@ -22,12 +25,10 @@ class TestController extends Controller
 
     public function index()
     {
-        $path       = 'users';
-        $documents  = $this->database->collection($path)->documents();
-        $users      = $documents->rows();
+
+        $users      = $this->database->collection('users')->documents();
         $data       = [
             'users'     => $users
-
         ];
         return view('test.test', $data);
     }
@@ -37,25 +38,12 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CreateUser $request)
+    public function create()
     {
-        $users = $this->database->collection('users');
-        $id     = time().rand(1000,9999);
-        $data = [
-            'id'        => $id,
-            'nama'      => 'Anisa Fitri Laila',
-            'email'     => 'anisa@gmail.com',
-            'phone'     => '0817250909',
-            'school'    => [
-                'level'         => 'SD',
-                'nama_sekolah'  => 'SD Kreativa'
-            ]
+        $data =[
+            'user'     => new User(),
         ];
-        $create = $this->database->collection('users')->document($id)->set($data);
-        if($create){
-            dd('suksess');
-        }
-        dd($request->email);
+        return view('test.create', $data);
 
     }
 
@@ -65,9 +53,21 @@ class TestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUser $request)
     {
-        //
+        $validated = $request->validated();
+        $data_input = [
+            'nama'      => $request->nama,
+            'email'     => $request->email,
+            'phone'     => ($request->phone)*1,
+            'dob'       => strtotime($request->dob)
+        ];
+//        var_dump($data_input);
+        $user   = app('firebase.firestore')->database()->collection('users')->newDocument();
+        $create = $user->set($data_input);
+        if($create){
+            return redirect()->route('user.index');
+        }
     }
 
     /**
@@ -102,7 +102,8 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $firestore = new FirestoreClient();
+        $document = $firestore->document('users/'.$id);
     }
 
     /**
@@ -114,8 +115,15 @@ class TestController extends Controller
      */
     public function update(UpdateUser $request, $id)
     {
-        $input = $request->validated();
-        dd($input);
+        $data_update = $request->all();
+        $user = app('firebase.firestore')
+            ->database()
+            ->collection('users')
+            ->document($id);
+        $update = $user->set($data_update);
+        if($update){
+            return redirect()->route('user.index');
+        }
 
     }
 
@@ -127,6 +135,11 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user       = app('firebase.firestore')->database()->collection('users')->document($id);
+        $destroy    = $user->delete();
+        if($destroy){
+            return redirect()->route('user.index');
+        }
+
     }
 }
