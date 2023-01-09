@@ -24,11 +24,12 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
-            'nama'      => 'required',
-            'dob'       => 'required|date',
-            'email'     => 'required|email',
-            'phone'     => 'required',
-            'nik'       => 'required'
+            'nama'          => 'required',
+            'dob'           => 'required|date',
+            'email'         => 'required|email',
+            'phone'         => 'required',
+            'nik'           => 'required',
+            'berat_badan'   => 'required|numeric'
         ];
     }
 }

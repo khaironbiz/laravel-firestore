@@ -26,7 +26,7 @@ class TestController extends Controller
     public function index()
     {
 
-        $users      = $this->database->collection('users')->documents();
+        $users      = $this->database->collection('users')->where('berat_badan','>',10)->documents();
         $data       = [
             'users'     => $users
         ];
@@ -57,12 +57,13 @@ class TestController extends Controller
     {
         $validated = $request->validated();
         $data_input = [
-            'nama'      => $request->nama,
-            'email'     => $request->email,
-            'phone'     => ($request->phone)*1,
-            'nik'       => ($request->nik)*1,
-            'dob'       => strtotime($request->dob),
-            'created_at'=> time()
+            'nama'          => $request->nama,
+            'email'         => $request->email,
+            'phone'         => ($request->phone)*1,
+            'nik'           => ($request->nik)*1,
+            'dob'           => strtotime($request->dob),
+            'berat_badan'   => ($request->berat_badan)*1,
+            'created_at'    => time()
         ];
 //        var_dump($data_input);
         $user   = app('firebase.firestore')->database()->collection('users')->newDocument();
@@ -121,13 +122,14 @@ class TestController extends Controller
 //        dd($data_user);
         $input = $request->all();
         $data_update = [
-            'nama'      => $request->nama,
-            'email'     => $request->email,
-            'phone'     => ($request->phone)*1,
-            'nik'       => ($request->nik)*1,
-            'dob'       => strtotime($request->dob),
-            'created_at'=> ($data_user['created_at'])*1,
-            'updated_at'=> time()
+            'nama'          => $request->nama,
+            'email'         => $request->email,
+            'phone'         => ($request->phone)*1,
+            'nik'           => ($request->nik)*1,
+            'dob'           => strtotime($request->dob),
+            'berat_badan'   => ($request->berat_badan)*1,
+            'created_at'    => ($data_user['created_at'])*1,
+            'updated_at'    => time()
         ];
         $user = app('firebase.firestore')
             ->database()

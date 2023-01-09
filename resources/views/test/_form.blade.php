@@ -29,6 +29,7 @@
         @enderror
     </td>
 </tr>
+
 <tr>
     <td>NIK</td>
     <td>:</td>
@@ -45,6 +46,16 @@
     <td>
         <input type="date" class="form-control" name="dob" value="{{ date('Y-m-d', (old('dob',$user['dob']))) }}">
         @error('dob')
+        <small class="text-danger">{{$message}}</small>
+        @enderror
+    </td>
+</tr>
+<tr>
+    <td>Berat Badan</td>
+    <td>:</td>
+    <td>
+        <input type="text" class="form-control" name="berat_badan" value="{{ (old('berat_badan', $user['berat_badan']))  }}">
+        @error('berat_badan')
         <small class="text-danger">{{$message}}</small>
         @enderror
     </td>
