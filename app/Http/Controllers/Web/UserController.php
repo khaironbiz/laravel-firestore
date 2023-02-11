@@ -27,4 +27,8 @@ class UserController extends Controller
         ];
         return view('test.firebase', $data);
     }
+    public function khairon()
+    {
+        echo "Khairon";
+    }
 }
