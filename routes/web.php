@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('tests', [\App\Http\Controllers\TestController::class, 'index'])->name('user.index');
-Route::get('test', [\App\Http\Controllers\TestController::class, 'create'])->name('user.create');
-Route::post('test', [\App\Http\Controllers\TestController::class, 'store'])->name('user.store');
-Route::get('test/{id}', [\App\Http\Controllers\TestController::class, 'show'])->name('user.show');
-Route::post('test/{id}/update', [\App\Http\Controllers\TestController::class, 'update'])->name('user.update');
-Route::post('test/{id}/destroy', [\App\Http\Controllers\TestController::class, 'destroy'])->name('user.destroy');
+Route::get('users', [UserController::class, 'index']);
+Route::get('tests', [TestController::class, 'index'])->name('user.index');
+Route::get('test', [TestController::class, 'create'])->name('user.create');
+Route::post('test', [TestController::class, 'store'])->name('user.store');
+Route::get('test/{id}', [TestController::class, 'show'])->name('user.show');
+Route::post('test/{id}/update', [TestController::class, 'update'])->name('user.update');
+Route::post('test/{id}/destroy', [TestController::class, 'destroy'])->name('user.destroy');

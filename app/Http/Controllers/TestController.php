@@ -9,12 +9,15 @@ use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Firestore;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Firestore\Transaction;
+use Kreait\Firebase\Contract\Database;
 
 class TestController extends Controller
 {
-    public function __construct(Firestore $firestore)
+    public function __construct(Firestore $firestore, Database $database)
     {
         $this->database = $firestore->database();
+        $this->firebase = $database;
+        $this->users    = $database->getReference('users');
 
     }
     /**
@@ -25,8 +28,9 @@ class TestController extends Controller
 
     public function index()
     {
-
-        $users      = $this->database->collection('users')->where('berat_badan','>',10)->documents();
+        $users      = $this->database->collection('users')
+                        ->where('berat_badan','>',10)
+                        ->documents();
         $data       = [
             'users'     => $users
         ];
@@ -44,7 +48,6 @@ class TestController extends Controller
             'user'     => new User(),
         ];
         return view('test.create', $data);
-
     }
 
     /**
@@ -66,7 +69,7 @@ class TestController extends Controller
             'created_at'    => time()
         ];
 //        var_dump($data_input);
-        $user   = app('firebase.firestore')->database()->collection('users')->newDocument();
+        $user   = $this->database->collection('users')->newDocument();
         $create = $user->set($data_input);
         if($create){
             return redirect()->route('user.index');
@@ -157,4 +160,5 @@ class TestController extends Controller
         }
 
     }
+
 }
