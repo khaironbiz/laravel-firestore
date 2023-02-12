@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('khairon', [UserController::class, 'khairon']);
 Route::get('users', [UserController::class, 'index']);
+Route::get('user/create', [UserController::class, 'create']);
+Route::post('users', [UserController::class, 'store'])->name('user.foto');
 Route::get('tests', [TestController::class, 'index'])->name('user.index');
 Route::get('test', [TestController::class, 'create'])->name('user.create');
 Route::post('test', [TestController::class, 'store'])->name('user.store');
