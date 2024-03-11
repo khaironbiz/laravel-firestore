@@ -5,28 +5,20 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Kreait\Firebase\Contract\Database;
-use Kreait\Firebase\Contract\Firestore;
-//use Kreait\Firebase\Contract\Storage;
+
 
 class UserController extends Controller
 {
-    public function __construct(Firestore $firestore, Database $database)
-    {
-//        $this->storage  = $storage;
-        $this->database = $firestore->database();
-        $this->firebase = $database;
-        $this->users    = $database->getReference('users');
 
-    }
     public function index()
     {
-
-        $users      = $this->users->getValue();
+        $database   = app('firebase.database');
+        $db_user    = $database->getReference('users');
+        $users      = $db_user->getValue();
         $data       = [
             'users'     => $users
         ];
-        return view('test.firebase', $data);
+        return view('users.firebase', $data);
     }
     public function create()
     {
@@ -35,17 +27,31 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $storage = app('firebase.storage');
+
         $validatedData = $request->validate([
             'file' => 'required|max:20048',
         ]);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
 
-        $name   = $request->file('file')->getClientOriginalName();
-        $path   = "avatars";
-        $upload = $request->file('file')->storeAs($path, $name);
-        $link   = Storage::url($path."/".$name);
-        dd($link) ;
-//        return Storage::download($path."/".$name);
+            // Upload the file to Google Cloud Storage
+            Storage::disk()->put($filename, file_get_contents($file), 'public');
 
+            // Optionally, you can generate a public URL to the uploaded file
+            $url = Storage::disk('gcs')->url($filename);
 
+            return response()->json(['message' => 'File uploaded successfully', 'url' => $url]);
+        }
+
+        return response()->json(['message' => 'No file uploaded'], 400);
+//
+//        $name   = $request->file('file')->getClientOriginalName();
+//        $path   = "avatars";
+//        $upload = $request->file('file')->storeAs($path, $name);
+//        $link   = Storage::url($path."/".$name);
+//        dd($link) ;
+////        return Storage::download($path."/".$name);
     }
 }

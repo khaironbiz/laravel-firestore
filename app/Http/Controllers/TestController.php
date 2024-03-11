@@ -5,20 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\CreateUser;
 use App\Http\Requests\User\UpdateUser;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Kreait\Firebase\Contract\Firestore;
 use Google\Cloud\Firestore\FirestoreClient;
-use Google\Cloud\Firestore\Transaction;
-use Kreait\Firebase\Contract\Database;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Kreait\Firebase\Contract\Firestore;
+use Kreait\Firebase\Contract\Storage;
 
 class TestController extends Controller
 {
-    public function __construct(Firestore $firestore, Database $database)
+    public function __construct(Firestore $firestore, Storage $storage)
     {
         $this->database = $firestore->database();
-        $this->firebase = $database;
-        $this->users    = $database->getReference('users');
-
+        $this->storage = $storage;
     }
     /**
      * Display a listing of the resource.
@@ -62,8 +60,8 @@ class TestController extends Controller
         $data_input = [
             'nama'          => $request->nama,
             'email'         => $request->email,
-            'phone'         => ($request->phone)*1,
-            'nik'           => ($request->nik)*1,
+            'phone'         => (int)$request->phone,
+            'nik'           => ($request->nik),
             'dob'           => strtotime($request->dob),
             'berat_badan'   => ($request->berat_badan)*1,
             'created_at'    => time()
@@ -159,6 +157,20 @@ class TestController extends Controller
             return redirect()->route('user.index');
         }
 
+    }
+
+    public function storeFile(Request $request)
+    {
+        $file = $request->file('file');
+        $filename = null;
+        $folder = "upload";
+        $name = !is_null($filename) ? $filename : Str::random(25);
+
+        return $file->storeAs(
+            $folder,
+            $name . "." . $file->getClientOriginalExtension(),
+            'gcs'
+        );
     }
 
 }

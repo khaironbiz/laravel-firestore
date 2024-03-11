@@ -20,6 +20,7 @@
                 @endif
                     <div class="col-md-8">
                         <a href="{{ route('user.create') }}" class="btn btn-primary">Add Data</a>
+
                         <table class="table table-sm table-striped">
                             <thead>
                             <th>#</th>

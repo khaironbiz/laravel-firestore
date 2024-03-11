@@ -18,12 +18,14 @@
                         </button>
                     </div>
                 @endif
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <a href="{{ route('user.create') }}" class="btn btn-primary">Add Data</a>
                         <table class="table table-sm table-striped">
                             <thead>
                             <th>#</th>
+                            <th>ID</th>
                             <th>Nama</th>
+                            <th>Gender</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Action</th>
@@ -32,9 +34,16 @@
                                 @foreach($users as $key => $data)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $key }}</td>
                                         <td>{{ $data['nama']}}</td>
+                                        <td>
+                                            @if(empty($data['gender']))
+                                            @else
+                                                {{ $data['gender']}}
+                                            @endif
+                                        </td>
                                         <td>{{ $data['email']}}</td>
-                                        <td></td>
+                                        <td>{{ $data['nomor_telepon'] }}</td>
                                         <td>
                                             <a href="" class="btn btn-sm btn-info">Detail</a>
                                         </td>

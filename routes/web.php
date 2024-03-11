@@ -27,3 +27,4 @@ Route::post('test', [TestController::class, 'store'])->name('user.store');
 Route::get('test/{id}', [TestController::class, 'show'])->name('user.show');
 Route::post('test/{id}/update', [TestController::class, 'update'])->name('user.update');
 Route::post('test/{id}/destroy', [TestController::class, 'destroy'])->name('user.destroy');
+Route::post('upload', [TestController::class, 'storeFile'])->name('user.store.file');
