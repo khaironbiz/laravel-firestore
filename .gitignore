@@ -5,7 +5,8 @@
 /storage/*.key
 /vendor
 .env
-
+atmsehat-firebase.json
+firebase-credential.json
 .env.backup
 .env.production
 .phpunit.result.cache
